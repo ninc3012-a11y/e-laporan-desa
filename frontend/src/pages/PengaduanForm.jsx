@@ -36,6 +36,11 @@ export default function PengaduanForm({ onSuccess }) {
       return;
     }
 
+    if (form.isi.length < 15) {
+      setError("Deskripsi pengaduan terlalu pendek. Minimal 15 karakter agar laporan jelas.");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
     setSuccess("");

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import AdminSidebar from "../components/AdminSidebar";
+import NotificationBell from "../components/NotificationBell";
 
 import {
-  Bell,
   CheckCircle,
   Clock,
   XCircle,
@@ -117,10 +117,7 @@ function AdminDashboard() {
                 />
               </div>
 
-              <button className="relative bg-white p-3 rounded-2xl border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm">
-                <Bell size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
-              </button>
+              <NotificationBell role="admin" />
             </motion.div>
           </div>
 

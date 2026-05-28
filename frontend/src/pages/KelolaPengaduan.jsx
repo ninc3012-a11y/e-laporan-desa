@@ -20,6 +20,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import AdminSidebar from "../components/AdminSidebar";
 import ModalSelesai from "../components/ModalSelesai";
+import ModalDitolak from "../components/ModalDitolak";
+import NotificationBell from "../components/NotificationBell";
 
 function KelolaPengaduan() {
   const [data, setData] = useState([]);
@@ -32,6 +34,9 @@ function KelolaPengaduan() {
   const [fotoSelesaiInline, setFotoSelesaiInline] = useState(null);
   const [isModalSelesaiOpen, setIsModalSelesaiOpen] = useState(false);
   const [idForSelesai, setIdForSelesai] = useState(null);
+  
+  const [isModalDitolakOpen, setIsModalDitolakOpen] = useState(false);
+  const [idForDitolak, setIdForDitolak] = useState(null);
   
   // State baru untuk menghandle teks panjang
   const [expandedId, setExpandedId] = useState(null);
@@ -55,6 +60,11 @@ function KelolaPengaduan() {
     if (status === "Selesai") {
       setIdForSelesai(id);
       setIsModalSelesaiOpen(true);
+      return;
+    }
+    if (status === "Ditolak") {
+      setIdForDitolak(id);
+      setIsModalDitolakOpen(true);
       return;
     }
     try {
@@ -129,9 +139,12 @@ function KelolaPengaduan() {
               </h1>
               <p className="text-slate-500 font-medium mt-1">Pantau dan tindak lanjuti aspirasi warga Desa Kima Bajo</p>
             </div>
-            <div className="flex items-center gap-2 bg-indigo-50 px-4 py-2 rounded-2xl text-indigo-700 font-bold text-sm border border-indigo-100">
-              <MessageSquare size={18} />
-              {filteredData.length} Total Data
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 bg-indigo-50 px-4 py-2.5 rounded-2xl text-indigo-700 font-bold text-sm border border-indigo-100 shadow-sm">
+                <MessageSquare size={18} />
+                {filteredData.length} Total Data
+              </div>
+              <NotificationBell role="admin" />
             </div>
           </div>
 
@@ -390,6 +403,13 @@ function KelolaPengaduan() {
         isOpen={isModalSelesaiOpen}
         onClose={() => setIsModalSelesaiOpen(false)}
         selectedId={idForSelesai}
+        onRefresh={fetchData}
+      />
+
+      <ModalDitolak
+        isOpen={isModalDitolakOpen}
+        onClose={() => setIsModalDitolakOpen(false)}
+        selectedId={idForDitolak}
         onRefresh={fetchData}
       />
     </div>

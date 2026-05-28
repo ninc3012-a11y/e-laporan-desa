@@ -136,7 +136,7 @@ export default function PengaduanList() {
                 {item.isi}
               </p>
 
-              {/* FOTO KEJADIAN & TANGGAPAN */}
+                {/* FOTO KEJADIAN & TANGGAPAN */}
               <div className="flex flex-col md:flex-row gap-6">
                 {item.foto && (
                   <div className="md:w-1/3 shrink-0">
@@ -154,7 +154,25 @@ export default function PengaduanList() {
                   </div>
                 )}
 
-                {item.tanggapan && (
+                {item.status === "Ditolak" && (item.alasanTolak || item.tanggapan) ? (
+                  <div className="flex-1 p-5 bg-red-50/80 border border-red-200 rounded-3xl relative overflow-hidden">
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 text-red-700 font-bold mb-3 text-sm uppercase tracking-wide">
+                        <XCircle size={18} />
+                        Laporan Ditolak
+                      </div>
+                      {item.alasanTolak && (
+                        <div className="mb-2 inline-flex bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-lg">
+                          Alasan: {item.alasanTolak}
+                        </div>
+                      )}
+                      {item.tanggapan && (
+                        <p className="text-red-900 text-base italic leading-relaxed mt-2">"{item.tanggapan}"</p>
+                      )}
+                    </div>
+                  </div>
+                ) : item.tanggapan ? (
                   <div className="flex-1 p-5 bg-indigo-50/50 border border-indigo-100 rounded-3xl relative overflow-hidden">
                     <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-indigo-500"></div>
                     <div className="flex flex-col sm:flex-row gap-4 h-full">
@@ -187,7 +205,7 @@ export default function PengaduanList() {
                       )}
                     </div>
                   </div>
-                )}
+                ) : null}
               </div>
             </motion.div>
           );

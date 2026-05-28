@@ -14,6 +14,7 @@ const pengaduanRoutes = require("./routes/pengaduan");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const informasiRoutes = require("./routes/informasi");
+const notificationRoutes = require("./routes/notification");
 
 // =====================
 // PAKAI ROUTE
@@ -22,6 +23,7 @@ app.use("/api/pengaduan", pengaduanRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/informasi", informasiRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // AKSES GAMBAR
 app.use("/api/pengaduan", pengaduanRoutes);

@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import PengaduanForm from "./PengaduanForm";
 import PengaduanList from "./PengaduanList";
+import NotificationBell from "../components/NotificationBell";
 import {
-  FileText, Clock, CheckCircle, LogOut, Bell,
+  FileText, Clock, CheckCircle, LogOut,
   PlusCircle, List, ArrowRight, MessageCircle
 } from "lucide-react";
 import logo from "../assets/logo.png"; // Import logo resmi
@@ -71,10 +72,13 @@ function UserDashboard() {
 
         <div className="flex items-center gap-3">
           <button onClick={() => navigate('/')} className="hidden md:block hover:text-indigo-300 transition-colors text-sm font-bold px-4">Beranda</button>
-          <button className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-all relative group">
-            <Bell size={20} />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-indigo-900"></span>
-          </button>
+          
+          <NotificationBell 
+            role="warga" 
+            userId={user?.id} 
+            buttonClass="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-all relative group"
+          />
+
           <button
             onClick={logout}
             className="flex items-center gap-2 bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white border border-rose-500/20 p-2.5 px-5 rounded-xl transition-all text-sm font-bold"

@@ -19,6 +19,24 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // =====================
+// FILTER WORDS & UTILS
+// =====================
+const badWords = [
+  "anjing", "babi", "bangsat", "tolol", "goblok",
+  "kontol", "memek", "jembut", "pantek", "perek",
+  "pelacur", "lonte", "bajingan", "asu", "tai",
+  "kampret", "sialan", "ngentot"
+];
+
+const containsBadWord = (text) => {
+  if (!text) return false;
+  return badWords.some(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    return regex.test(text);
+  });
+};
+
+// =====================
 // 1. GET ALL PENGADUAN (Untuk Admin)
 // =====================
 router.get("/", async (req, res) => {
@@ -66,6 +84,35 @@ router.get("/user/:userId", async (req, res) => {
 router.post("/", upload.single("foto"), async (req, res) => {
   try {
     const { judul, isi, lokasi, userId } = req.body;
+
+    // Validasi panjang minimum
+    if (!isi || isi.length < 15) {
+      return res.status(400).json({ message: "Deskripsi pengaduan minimal 15 karakter agar jelas." });
+    }
+
+    // Filter kata kasar
+    if (containsBadWord(judul) || containsBadWord(isi)) {
+      return res.status(400).json({ message: "Pengaduan mengandung bahasa tidak sopan atau kata kasar. Harap perbaiki bahasa Anda." });
+    }
+
+    // Cek duplikasi
+    // Mencari pengaduan dengan lokasi yang sama atau judul yang mirip (contains) yang statusnya belum selesai/ditolak
+    const existingPengaduan = await prisma.pengaduan.findFirst({
+      where: {
+        AND: [
+          { status: { in: ["Menunggu", "Diproses"] } },
+          { lokasi: { equals: lokasi } }
+        ]
+      }
+    });
+
+    if (existingPengaduan) {
+      return res.status(409).json({
+        message: `Terdapat pengaduan yang sedang diproses di lokasi tersebut ("${existingPengaduan.judul}"). Silakan pantau pengaduan yang sudah ada.`,
+        existingId: existingPengaduan.id
+      });
+    }
+
     const data = await prisma.pengaduan.create({
       data: {
         judul,
@@ -75,6 +122,15 @@ router.post("/", upload.single("foto"), async (req, res) => {
         foto: req.file ? req.file.filename : null,
       },
     });
+
+    // Create notification for admin
+    await prisma.notification.create({
+      data: {
+        pesan: `Ada pengaduan baru: "${judul}" di ${lokasi || 'lokasi tidak disebutkan'}`,
+        forAdmin: true
+      }
+    });
+
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -87,12 +143,17 @@ router.post("/", upload.single("foto"), async (req, res) => {
 router.put("/tanggapan/:id", upload.single("fotoSelesai"), async (req, res) => {
   try {
     const { id } = req.params;
-    const { tanggapan, status } = req.body;
+    const { tanggapan, status, alasanTolak } = req.body;
 
     const updateData = {
       tanggapan: tanggapan,
       status: status,
     };
+
+    // Tambahkan alasan tolak jika status Ditolak
+    if (status === "Ditolak" && alasanTolak) {
+      updateData.alasanTolak = alasanTolak;
+    }
 
     // Jika ada file fotoSelesai diunggah, tambahkan ke database
     if (req.file) {
@@ -104,6 +165,15 @@ router.put("/tanggapan/:id", upload.single("fotoSelesai"), async (req, res) => {
         id: Number(id),
       },
       data: updateData,
+    });
+
+    // Create notification for user
+    await prisma.notification.create({
+      data: {
+        pesan: `Status pengaduan Anda "${data.judul}" diperbarui menjadi: ${status}.`,
+        userId: data.userId,
+        forAdmin: false
+      }
     });
 
     res.json({
