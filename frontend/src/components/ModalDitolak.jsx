@@ -12,7 +12,7 @@ const ModalDitolak = ({ isOpen, onClose, selectedId, onRefresh }) => {
         if (!tanggapan) return alert("Isi catatan tambahan penolakan!");
 
         try {
-            await axios.put(`http://localhost:5000/api/pengaduan/tanggapan/${selectedId}`, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/pengaduan/tanggapan/${selectedId}`, {
                 status: "Ditolak",
                 alasanTolak: alasanTolak,
                 tanggapan: tanggapan

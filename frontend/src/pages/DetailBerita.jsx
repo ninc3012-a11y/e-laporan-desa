@@ -15,7 +15,7 @@ function DetailBerita() {
         const fetchDetail = async () => {
             try {
                 // Mengambil data berita tunggal dari backend
-                const res = await axios.get(`http://localhost:5000/api/informasi/${id}`);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/informasi/${id}`);
                 setBerita(res.data);
             } catch (err) {
                 console.error("Gagal memuat detail berita:", err);

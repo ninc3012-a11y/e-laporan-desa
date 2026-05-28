@@ -23,7 +23,7 @@ function UserDashboard() {
   const fetchPengaduan = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/pengaduan");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan`);
       // Filter laporan milik user yang sedang login
       const myData = res.data.filter((item) => item.user?.nik === user?.nik);
       setPengaduan(myData);

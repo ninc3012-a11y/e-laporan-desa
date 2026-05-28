@@ -19,7 +19,7 @@ function Laporan() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/pengaduan");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan`);
       setData(res.data);
     } catch (err) {
       console.log(err);

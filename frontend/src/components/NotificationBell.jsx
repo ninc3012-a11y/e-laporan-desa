@@ -10,9 +10,9 @@ const NotificationBell = ({ role, userId, buttonClass }) => {
 
   const fetchNotifications = async () => {
     try {
-      let url = "http://localhost:5000/api/notifications/admin";
+      let url = `${import.meta.env.VITE_API_URL}/api/notifications/admin`;
       if (role === "warga" && userId) {
-        url = `http://localhost:5000/api/notifications/user/${userId}`;
+        url = `${import.meta.env.VITE_API_URL}/api/notifications/user/${userId}`;
       }
       const res = await axios.get(url);
       setNotifications(res.data);
@@ -44,7 +44,7 @@ const NotificationBell = ({ role, userId, buttonClass }) => {
 
   const markAsRead = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/notifications/${id}/read`);
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/notifications/${id}/read`);
       setNotifications(notifications.map(n => n.id === id ? { ...n, isRead: true } : n));
     } catch (err) {
       console.error("Failed to mark as read:", err);

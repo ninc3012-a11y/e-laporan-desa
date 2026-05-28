@@ -32,7 +32,7 @@ function Home() {
   // =====================
   const fetchInformasi = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/informasi");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/informasi`);
       setInformasi(res.data);
       setErrorInfo("");
     } catch (err) {
@@ -48,7 +48,7 @@ function Home() {
   // =====================
   const fetchPengaduan = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/pengaduan");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan`);
       setPengaduan(res.data);
     } catch (err) {
       console.log(err);

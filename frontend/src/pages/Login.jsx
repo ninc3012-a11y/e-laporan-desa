@@ -37,7 +37,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           nik: form.nik,
           password: form.password,

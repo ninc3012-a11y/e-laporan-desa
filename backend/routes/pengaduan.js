@@ -7,16 +7,14 @@ const path = require("path");
 // MULTER UPLOAD CONFIG
 // =====================
 const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    // Menggunakan Date.now() agar nama file unik dan tetap menjaga ekstensi asli
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+
+const { createClient } = require("@supabase/supabase-js");
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+);
 
 // =====================
 // FILTER WORDS & UTILS
@@ -113,13 +111,31 @@ router.post("/", upload.single("foto"), async (req, res) => {
       });
     }
 
+    let fotoUrl = null;
+    if (req.file) {
+      const fileName = `${Date.now()}${path.extname(req.file.originalname)}`;
+      const { data: uploadData, error } = await supabase.storage
+        .from("uploads")
+        .upload(`pengaduan/${fileName}`, req.file.buffer, {
+          contentType: req.file.mimetype,
+        });
+      if (error) {
+        console.error("Supabase upload error:", error);
+      } else {
+        const { data: publicUrlData } = supabase.storage
+          .from("uploads")
+          .getPublicUrl(`pengaduan/${fileName}`);
+        fotoUrl = publicUrlData.publicUrl;
+      }
+    }
+
     const data = await prisma.pengaduan.create({
       data: {
         judul,
         isi,
         lokasi,
         userId: Number(userId),
-        foto: req.file ? req.file.filename : null,
+        foto: fotoUrl,
       },
     });
 
@@ -157,7 +173,20 @@ router.put("/tanggapan/:id", upload.single("fotoSelesai"), async (req, res) => {
 
     // Jika ada file fotoSelesai diunggah, tambahkan ke database
     if (req.file) {
-      updateData.fotoSelesai = req.file.filename;
+      const fileName = `${Date.now()}${path.extname(req.file.originalname)}`;
+      const { data: uploadData, error } = await supabase.storage
+        .from("uploads")
+        .upload(`tanggapan/${fileName}`, req.file.buffer, {
+          contentType: req.file.mimetype,
+        });
+      if (error) {
+        console.error("Supabase upload error:", error);
+      } else {
+        const { data: publicUrlData } = supabase.storage
+          .from("uploads")
+          .getPublicUrl(`tanggapan/${fileName}`);
+        updateData.fotoSelesai = publicUrlData.publicUrl;
+      }
     }
 
     const data = await prisma.pengaduan.update({

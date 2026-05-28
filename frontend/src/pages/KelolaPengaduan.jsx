@@ -43,7 +43,7 @@ function KelolaPengaduan() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/pengaduan");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/pengaduan`);
       setData(res.data);
     } catch (error) {
       console.log(error);
@@ -68,7 +68,7 @@ function KelolaPengaduan() {
       return;
     }
     try {
-      await axios.put(`http://localhost:5000/api/pengaduan/tanggapan/${id}`, { status });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/pengaduan/tanggapan/${id}`, { status });
       fetchData();
     } catch (err) {
       console.log(err);
@@ -86,7 +86,7 @@ function KelolaPengaduan() {
         formData.append("fotoSelesai", fotoSelesaiInline);
       }
 
-      await axios.put(`http://localhost:5000/api/pengaduan/tanggapan/${id}`, formData, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/pengaduan/tanggapan/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
 
@@ -104,7 +104,7 @@ function KelolaPengaduan() {
   const hapus = async (id) => {
     if (!window.confirm("Yakin ingin menghapus pengaduan ini?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/pengaduan/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/pengaduan/${id}`);
       fetchData();
     } catch (err) {
       console.log(err);
@@ -269,12 +269,12 @@ function KelolaPengaduan() {
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] block mb-3 pl-1">Lampiran Foto Warga</span>
                         <div className="relative group/img overflow-hidden rounded-[2rem] border-4 border-white shadow-lg aspect-video md:aspect-auto md:h-56">
                           <img
-                            src={`http://localhost:5000/uploads/${item.foto}`}
+                            src={item.foto}
                             alt="kejadian"
                             className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
                           />
                           <div
-                            onClick={() => setSelectedImage(`http://localhost:5000/uploads/${item.foto}`)}
+                            onClick={() => setSelectedImage(item.foto)}
                             className="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover/img:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
                           >
                             <Search className="text-white" size={32} />
@@ -300,9 +300,9 @@ function KelolaPengaduan() {
                                 <Camera size={14} /> Bukti Penyelesaian
                               </div>
                               <img
-                                src={`http://localhost:5000/uploads/${item.fotoSelesai}`}
+                                src={item.fotoSelesai}
                                 className="w-24 h-16 object-cover rounded-xl border-2 border-white/30 cursor-pointer hover:border-white transition-all shadow-md"
-                                onClick={() => setSelectedImage(`http://localhost:5000/uploads/${item.fotoSelesai}`)}
+                                onClick={() => setSelectedImage(item.fotoSelesai)}
                               />
                             </div>
                           )}

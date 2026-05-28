@@ -17,7 +17,7 @@ const ModalSelesai = ({ isOpen, onClose, selectedId, onRefresh }) => {
         formData.append("fotoSelesai", fotoSelesai); // Key ini harus sama dengan di Backend
 
         try {
-            await axios.put(`http://localhost:5000/api/pengaduan/tanggapan/${selectedId}`, formData, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/pengaduan/tanggapan/${selectedId}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert("Laporan Berhasil Diselesaikan!");

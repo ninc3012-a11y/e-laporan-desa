@@ -12,7 +12,7 @@ function DataUser() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/user");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user`);
       setUsers(res.data);
     } catch (err) {
       console.error("Gagal mengambil data:", err);
@@ -30,7 +30,7 @@ function DataUser() {
 
     try {
       setIsDeleting(id);
-      await axios.delete(`http://localhost:5000/api/user/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/user/${id}`);
       setUsers(users.filter((user) => user.id !== id));
       alert("User berhasil dihapus ✨");
     } catch (err) {

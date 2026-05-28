@@ -29,7 +29,7 @@ function InformasiAdmin() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/informasi");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/informasi`);
       setData(res.data);
     } catch (err) {
       console.log(err);
@@ -50,10 +50,10 @@ function InformasiAdmin() {
     e.preventDefault();
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/informasi/${editId}`, form);
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/informasi/${editId}`, form);
         alert("Informasi berhasil diperbarui ✨");
       } else {
-        await axios.post("http://localhost:5000/api/informasi", form);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/informasi`, form);
         alert("Informasi baru ditambahkan 🚀");
       }
       setForm({ judul: "", isi: "", gambar: "", link: "" });
@@ -67,7 +67,7 @@ function InformasiAdmin() {
   const hapus = async (id) => {
     if (!window.confirm("Yakin ingin menghapus berita ini dari publik?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/informasi/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/informasi/${id}`);
       fetchData();
     } catch (err) {
       console.log(err);

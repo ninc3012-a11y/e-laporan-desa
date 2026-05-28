@@ -142,11 +142,11 @@ export default function PengaduanList() {
                   <div className="md:w-1/3 shrink-0">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Foto Kejadian:</p>
                     <div
-                      onClick={() => setSelectedPreview(`http://localhost:5000/uploads/${item.foto}`)}
+                      onClick={() => setSelectedPreview(item.foto)}
                       className="w-full h-40 overflow-hidden rounded-2xl border border-slate-200 shadow-sm cursor-zoom-in"
                     >
                       <img
-                        src={`http://localhost:5000/uploads/${item.foto}`}
+                        src={item.foto}
                         alt="foto bukti"
                         className="w-full h-full object-cover hover:scale-105 transition-transform"
                       />
@@ -192,11 +192,11 @@ export default function PengaduanList() {
                             Hasil Kerja:
                           </div>
                           <div
-                            onClick={() => setSelectedPreview(`http://localhost:5000/uploads/${item.fotoSelesai}`)}
+                            onClick={() => setSelectedPreview(item.fotoSelesai)}
                             className="overflow-hidden rounded-xl border-2 border-white shadow-md cursor-zoom-in group-hover:rotate-1 transition-transform"
                           >
                             <img
-                              src={`http://localhost:5000/uploads/${item.fotoSelesai}`}
+                              src={item.fotoSelesai}
                               alt="Hasil"
                               className="w-full h-24 object-cover"
                             />
