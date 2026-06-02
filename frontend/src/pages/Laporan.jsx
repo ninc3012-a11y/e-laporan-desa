@@ -15,6 +15,7 @@ import AdminSidebar from "../components/AdminSidebar";
 function Laporan() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [filterTime, setFilterTime] = useState("semua");
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
@@ -32,10 +33,37 @@ function Laporan() {
     fetchData();
   }, []);
 
-  const filteredData = data.filter((item) =>
-    item.judul.toLowerCase().includes(search.toLowerCase()) ||
-    item.user?.nama?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredData = data.filter((item) => {
+    const matchesSearch =
+      item.judul.toLowerCase().includes(search.toLowerCase()) ||
+      item.user?.nama?.toLowerCase().includes(search.toLowerCase());
+
+    if (!matchesSearch) return false;
+
+    if (filterTime === "semua") return true;
+
+    const itemDate = new Date(item.createdAt);
+    const now = new Date();
+
+    if (filterTime === "minggu") {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(now.getDate() - 7);
+      return itemDate >= oneWeekAgo && itemDate <= now;
+    }
+
+    if (filterTime === "bulan") {
+      return (
+        itemDate.getMonth() === now.getMonth() &&
+        itemDate.getFullYear() === now.getFullYear()
+      );
+    }
+
+    if (filterTime === "tahun") {
+      return itemDate.getFullYear() === now.getFullYear();
+    }
+
+    return true;
+  });
 
   const statusStyle = (status) => {
     switch (status) {
@@ -84,9 +112,9 @@ function Laporan() {
             </button>
           </div>
 
-          {/* SEARCH */}
-          <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 border border-white p-6 mb-10">
-            <div className="relative max-w-md group">
+          {/* SEARCH & FILTER */}
+          <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 border border-white p-6 mb-10 flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1 group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" size={20} />
               <input
                 type="text"
@@ -96,6 +124,16 @@ function Laporan() {
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium"
               />
             </div>
+            <select
+              value={filterTime}
+              onChange={(e) => setFilterTime(e.target.value)}
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-600 outline-none w-full md:w-auto min-w-[200px] cursor-pointer"
+            >
+              <option value="semua">Semua Waktu</option>
+              <option value="minggu">7 Hari Terakhir</option>
+              <option value="bulan">Bulan Ini</option>
+              <option value="tahun">Tahun Ini</option>
+            </select>
           </div>
 
           {/* TABLE PREVIEW */}
@@ -146,7 +184,14 @@ function Laporan() {
             <p className="text-sm italic">Jl. Raya Wori-Likupang, Kode Pos 95351</p>
           </div>
 
-          <h3 className="text-center text-lg font-bold underline mb-6 uppercase">Laporan Rekapitulasi Pengaduan</h3>
+          <h3 className="text-center text-lg font-bold underline mb-6 uppercase">
+            Laporan Rekapitulasi Pengaduan
+            {filterTime !== "semua" && (
+              <span className="block text-sm font-medium normal-case mt-1 no-underline">
+                Periode: {filterTime === "minggu" ? "7 Hari Terakhir" : filterTime === "bulan" ? "Bulan Ini" : "Tahun Ini"}
+              </span>
+            )}
+          </h3>
 
           <table className="w-full border-collapse border border-black text-[11px]">
             <thead>

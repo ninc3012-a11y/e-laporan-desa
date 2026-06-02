@@ -121,6 +121,7 @@ router.post("/", upload.single("foto"), async (req, res) => {
         });
       if (error) {
         console.error("Supabase upload error:", error);
+        return res.status(500).json({ message: "Gagal mengunggah foto pengaduan. Pastikan Storage Supabase sudah diatur dengan benar.", error: error.message });
       } else {
         const { data: publicUrlData } = supabase.storage
           .from("uploads")
@@ -181,6 +182,7 @@ router.put("/tanggapan/:id", upload.single("fotoSelesai"), async (req, res) => {
         });
       if (error) {
         console.error("Supabase upload error:", error);
+        return res.status(500).json({ message: "Gagal mengunggah foto tanggapan. Pastikan Storage Supabase sudah diatur dengan benar.", error: error.message });
       } else {
         const { data: publicUrlData } = supabase.storage
           .from("uploads")
