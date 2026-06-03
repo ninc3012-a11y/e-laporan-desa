@@ -8,6 +8,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Pengaduan from "./pages/Pengaduan";
 import History from "./pages/History";
 import Informasi from "./pages/Informasi";
+import DetailBerita from "./pages/DetailBerita"; // Import halaman detail berita
 import TentangDesa from "./pages/TentangDesa"; // 1. Import halaman baru
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/pengaduan" element={<Pengaduan />} />
         <Route path="/history" element={<History />} />
         <Route path="/informasi" element={<Informasi />} />
+        <Route path="/informasi/:id" element={<DetailBerita />} />
 
         {/* ADMIN */}
         <Route
