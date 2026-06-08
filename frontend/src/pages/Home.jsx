@@ -135,57 +135,61 @@ function Home() {
       </section>
 
       {/* STATISTIK SECTION */}
-      <section className="relative -mt-16 z-20 px-6 max-w-7xl mx-auto">
+      <section className="relative -mt-16 z-20 px-4 md:px-6 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+          className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-indigo-900/10 border border-white p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
         >
-          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pb-2 md:pb-0">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Inbox size={24} className="md:w-7 md:h-7" />
+          {/* Total Laporan */}
+          <div className="bg-white hover:bg-indigo-50/50 transition-colors rounded-[2rem] p-6 flex flex-row items-center gap-5 border border-slate-100 shadow-sm">
+            <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+              <Inbox size={28} strokeWidth={2.5} />
             </div>
             <div>
-              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Total</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Total</p>
+              <h3 className="text-4xl font-black text-slate-800 tracking-tight">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.length}
               </h3>
             </div>
           </div>
 
-          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pb-2 md:pb-0">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <AlertCircle size={24} className="md:w-7 md:h-7" />
+          {/* Menunggu */}
+          <div className="bg-white hover:bg-slate-50/80 transition-colors rounded-[2rem] p-6 flex flex-row items-center gap-5 border border-slate-100 shadow-sm">
+            <div className="w-16 h-16 bg-slate-50 text-slate-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+              <AlertCircle size={28} strokeWidth={2.5} />
             </div>
             <div>
-              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Menunggu</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Menunggu</p>
+              <h3 className="text-4xl font-black text-slate-800 tracking-tight">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Menunggu").length}
               </h3>
             </div>
           </div>
 
-          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pt-2 md:pt-0">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Clock size={24} className="md:w-7 md:h-7" />
+          {/* Diproses */}
+          <div className="bg-white hover:bg-amber-50/50 transition-colors rounded-[2rem] p-6 flex flex-row items-center gap-5 border border-slate-100 shadow-sm">
+            <div className="w-16 h-16 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+              <Clock size={28} strokeWidth={2.5} />
             </div>
             <div>
-              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Diproses</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Diproses</p>
+              <h3 className="text-4xl font-black text-slate-800 tracking-tight">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Diproses").length}
               </h3>
             </div>
           </div>
 
-          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center pt-2 md:pt-0">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <CheckCircle size={24} className="md:w-7 md:h-7" />
+          {/* Selesai */}
+          <div className="bg-white hover:bg-emerald-50/50 transition-colors rounded-[2rem] p-6 flex flex-row items-center gap-5 border border-slate-100 shadow-sm">
+            <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+              <CheckCircle size={28} strokeWidth={2.5} />
             </div>
             <div>
-              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Selesai</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+              <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Selesai</p>
+              <h3 className="text-4xl font-black text-slate-800 tracking-tight">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Selesai").length}
               </h3>
             </div>
