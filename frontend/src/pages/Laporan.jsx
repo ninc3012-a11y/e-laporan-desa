@@ -16,6 +16,7 @@ function Laporan() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filterTime, setFilterTime] = useState("semua");
+  const [filterStatus, setFilterStatus] = useState("semua");
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
@@ -40,6 +41,10 @@ function Laporan() {
 
     if (!matchesSearch) return false;
 
+    // Filter by Status
+    if (filterStatus !== "semua" && item.status !== filterStatus) return false;
+
+    // Filter by Time
     if (filterTime === "semua") return true;
 
     const itemDate = new Date(item.createdAt);
@@ -124,10 +129,23 @@ function Laporan() {
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium"
               />
             </div>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-600 outline-none w-full md:w-auto min-w-[180px] cursor-pointer"
+            >
+              <option value="semua">Semua Status</option>
+              <option value="Menunggu">Menunggu</option>
+              <option value="Diproses">Diproses</option>
+              <option value="Selesai">Selesai</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+
             <select
               value={filterTime}
               onChange={(e) => setFilterTime(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-600 outline-none w-full md:w-auto min-w-[200px] cursor-pointer"
+              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium text-slate-600 outline-none w-full md:w-auto min-w-[180px] cursor-pointer"
             >
               <option value="semua">Semua Waktu</option>
               <option value="minggu">7 Hari Terakhir</option>
@@ -186,9 +204,11 @@ function Laporan() {
 
           <h3 className="text-center text-lg font-bold underline mb-6 uppercase">
             Laporan Rekapitulasi Pengaduan
-            {filterTime !== "semua" && (
+            {(filterTime !== "semua" || filterStatus !== "semua") && (
               <span className="block text-sm font-medium normal-case mt-1 no-underline">
-                Periode: {filterTime === "minggu" ? "7 Hari Terakhir" : filterTime === "bulan" ? "Bulan Ini" : "Tahun Ini"}
+                {filterTime !== "semua" && `Periode: ${filterTime === "minggu" ? "7 Hari Terakhir" : filterTime === "bulan" ? "Bulan Ini" : "Tahun Ini"}`}
+                {filterTime !== "semua" && filterStatus !== "semua" && " | "}
+                {filterStatus !== "semua" && `Status: ${filterStatus}`}
               </span>
             )}
           </h3>
