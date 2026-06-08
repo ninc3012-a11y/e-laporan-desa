@@ -141,39 +141,51 @@ function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-8 grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-gray-100"
+          className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
         >
-          <div className="flex items-center gap-6 md:justify-center pt-4 md:pt-0 first:pt-0">
-            <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Inbox size={28} />
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pb-2 md:pb-0">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <Inbox size={24} className="md:w-7 md:h-7" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Total Pengaduan</p>
-              <h3 className="text-3xl font-bold text-gray-900">
+              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Total</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.length}
               </h3>
             </div>
           </div>
 
-          <div className="flex items-center gap-6 md:justify-center pt-8 md:pt-0">
-            <div className="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Clock size={28} />
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pb-2 md:pb-0">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <AlertCircle size={24} className="md:w-7 md:h-7" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Sedang Diproses</p>
-              <h3 className="text-3xl font-bold text-gray-900">
+              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Menunggu</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Menunggu").length}
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center md:border-r border-gray-100 pt-2 md:pt-0">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <Clock size={24} className="md:w-7 md:h-7" />
+            </div>
+            <div>
+              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Diproses</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Diproses").length}
               </h3>
             </div>
           </div>
 
-          <div className="flex items-center gap-6 md:justify-center pt-8 md:pt-0">
-            <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <CheckCircle size={28} />
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-4 md:justify-center pt-2 md:pt-0">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <CheckCircle size={24} className="md:w-7 md:h-7" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500 mb-1">Telah Selesai</p>
-              <h3 className="text-3xl font-bold text-gray-900">
+              <p className="text-xs md:text-sm font-medium text-gray-500 mb-1">Selesai</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
                 {isLoadingPengaduan ? <span className="text-gray-300">...</span> : pengaduan.filter(p => p.status === "Selesai").length}
               </h3>
             </div>
